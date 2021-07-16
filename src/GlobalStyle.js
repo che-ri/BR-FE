@@ -8,7 +8,18 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'InfinitySans-BoldA1';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/InfinitySans-BoldA1.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* font 설정 */
+h1,h2,h3{
+    font-family: 'InfinitySans-BoldA1',sans-serif !important;;
+}
 input {
   font-family: 'InfinitySans-RegularA1', sans-serif !important;
 }

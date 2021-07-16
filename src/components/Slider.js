@@ -6,26 +6,53 @@ import "slick-carousel/slick/slick-theme.css";
 
 const imgUrl = require("../asset/mainBanner/1620351475.png").default;
 
-export default function SimpleSlider({ items }) {
+export default function SimpleSlider({
+    items,
+    show,
+    title,
+    process,
+    online,
+    store,
+    position,
+}) {
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
+        slidesToShow: show,
+        slidesToScroll: 3,
+        arrows: true,
         centerMode: true,
     };
     return (
         <Container>
-            <Image
-                src={require("../asset/mainBanner/1620379683.jpg").default}
-            />
             <StyledSlider {...settings}>
                 {items.map(item => (
                     <div key={items[item]}>
                         <ImageContainer>
-                            <Image src={item} />
+                            <Image src={item.url} />
+                            {item.event === "online" ? (
+                                <Event
+                                    src={
+                                        require("../asset/title/online_event.gif")
+                                            .default
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                            {item.event === "store" ? (
+                                <Event
+                                    src={
+                                        require("../asset/title/store_event.gif")
+                                            .default
+                                    }
+                                />
+                            ) : (
+                                ""
+                            )}
+                            <h5>{item.title}</h5>
+                            <span>{item.process}</span>
                         </ImageContainer>
                     </div>
                 ))}
@@ -47,7 +74,7 @@ const StyledSlider = styled(Slider)`
         outline: none;
     }
     .slick-dots {
-        bottom: 25px;
+        /* bottom: 20px; */
         li {
             button {
                 &:before {
@@ -60,10 +87,23 @@ const StyledSlider = styled(Slider)`
 
 const ImageContainer = styled.div`
     margin: 0 16px;
+    h5 {
+        margin: 5px 0;
+    }
+    span {
+        font-size: 10px;
+        color: #cdcdcd;
+    }
 `;
 
 const Image = styled.img`
     margin: auto;
     width: 100%;
     height: 100%;
+`;
+
+const Event = styled.img`
+    margin-top: 10px;
+    width: 100px;
+    height: 20px;
 `;
