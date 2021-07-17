@@ -75,12 +75,7 @@ const Header = () => {
                                 </Link>
                             </li>
                             <li>
-                                <a
-                                    href="https://www.happypointcard.com/page/join/index.spc"
-                                    target="_blank"
-                                >
-                                    JOIN
-                                </a>
+                                <Link to="/join">JOIN</Link>
                             </li>
                         </ul>
                     </LeftNav>
@@ -90,12 +85,7 @@ const Header = () => {
                                 <Link to="/">FLAVOL OF THE MONTH</Link>
                             </li>
                             <li>
-                                <Link to="/menu/main">MENU</Link>
-                            </li>
-                            <li>
-                                <Link to="/nutrient">
-                                    영양 성분 및 알레르기
-                                </Link>
+                                <Link to="/menu">MENU</Link>
                             </li>
                             <li>
                                 <Link to="/event">EVENT</Link>
@@ -104,7 +94,7 @@ const Header = () => {
                                 <Link to="/store">STORE</Link>
                             </li>
                             <li>
-                                <Link to="/about">ABOUT</Link>
+                                <Link to="/review">REVIEW</Link>
                             </li>
                         </ul>
                     </RightNav>
@@ -158,6 +148,7 @@ const Logo = styled(Link)`
 
 const Search = styled.button`
     background: none;
+    cursor: pointer;
     img {
         width: 50px;
         height: 50px;

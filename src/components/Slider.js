@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const imgUrl = require("../asset/mainBanner/1620351475.png").default;
+const imgUrl = require("../asset/mainBnr/1620351475.png").default;
 
 export default function SimpleSlider({
     items,
@@ -27,8 +27,8 @@ export default function SimpleSlider({
     return (
         <Container>
             <StyledSlider {...settings}>
-                {items.map(item => (
-                    <div key={items[item]}>
+                {items.map((item, idx) => (
+                    <div key={idx}>
                         <ImageContainer>
                             <Image src={item.url} />
                             {item.event === "online" ? (
