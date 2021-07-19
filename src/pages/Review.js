@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { addReviewDB } from "../redux/modules/review";
 
+import { spoon_left, spoon_right } from "../asset/icon";
 import Modal from "./ReviewWrite.js";
 
 const Review = props => {
@@ -35,7 +36,28 @@ const Review = props => {
     return (
         <>
             <Grid width="900px" margin="0px auto">
-                <Grid is_flex>
+                <Title>
+                    <img
+                        src={require("../asset/title/h_notice.png").default}
+                        alt="제목명"
+                    />
+                </Title>
+                <Grid width="100%">
+                    <BntBox>
+                        <Button
+                            _onClick={() => {
+                                openModal();
+                            }}
+                            width="115px"
+                            height="34px"
+                            bg="#d3c1ab"
+                            radius="3px"
+                        >
+                            글쓰기
+                        </Button>
+                    </BntBox>
+                </Grid>
+                {/* <Grid is_flex>
                     <Grid>
                         <p>
                             총 <span color="#ff7c98">{props.postCnt} 53</span>
@@ -61,7 +83,7 @@ const Review = props => {
                             검색
                         </Button>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
                 <Grid>
                     <Line />
@@ -95,59 +117,7 @@ const Review = props => {
                             </>
                         );
                     })}
-                    <Grid is_flex margin="0px auto" width="100%">
-                        <Grid is_flex padding="30px 228px">
-                            {/* 페이지 개수 만큼 map 돌린다. idx+1을 버튼의 text로 사용 */}
-                            {/*<ArrowButton onClick={ () => { moveFourPagesPrev() } } icon_url={prev_btn}></ArrowButton>*/}
-                            <Button
-                                _onClick={() => {
-                                    movePage();
-                                }}
-                                shape="circle"
-                                bg="#ff7c98"
-                            >
-                                1
-                            </Button>
-                            <Button
-                                _onClick={() => {
-                                    movePage();
-                                }}
-                                shape="circle"
-                            >
-                                2
-                            </Button>
-                            <Button
-                                _onClick={() => {
-                                    movePage();
-                                }}
-                                shape="circle"
-                            >
-                                3
-                            </Button>
-                            <Button
-                                _onClick={() => {
-                                    movePage();
-                                }}
-                                shape="circle"
-                            >
-                                4
-                            </Button>
-                            {/*<ArrowButton onClick={ () => { moveFourPagesNext() } } icon_url={next_btn}></ArrowButton>*/}
-                        </Grid>
-                        <Grid margin="0 300px 0 0">
-                            <Button
-                                _onClick={() => {
-                                    openModal();
-                                }}
-                                width="115px"
-                                height="34px"
-                                bg="#d3c1ab"
-                                radius="3px"
-                            >
-                                글쓰기
-                            </Button>
-                        </Grid>
-                    </Grid>
+
                     <Modal
                         open={modalOpen}
                         close={closeModal}
@@ -161,6 +131,34 @@ const Review = props => {
     );
 };
 export default Review;
+
+const Title = styled.div`
+    width: max-content;
+    margin: auto;
+    margin-top: 105px;
+    margin-bottom: 35px;
+    position: relative;
+    ::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: -50px;
+        top: 6px;
+        width: 36px;
+        height: 12px;
+        background: url(${spoon_left}) no-repeat;
+    }
+    ::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 6px;
+        right: -50px;
+        width: 36px;
+        height: 12px;
+        background: url(${spoon_right}) no-repeat;
+    }
+`;
 
 const Line = styled.hr`
     border: 0.5px solid #ff7c98;
@@ -215,4 +213,14 @@ const ArrowButton = styled.div`
     background: url(${props => props.icon_url});
     background-size: cover;
     cursor: pointer;
+`;
+
+const BntBox = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 5px;
+    button:hover {
+        background: #ff7c98;
+    }
 `;

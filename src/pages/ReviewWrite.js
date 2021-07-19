@@ -39,20 +39,7 @@ const ReviewWrite = props => {
         <div className={open ? "openModal modal" : "modal"}>
             {open ? (
                 <section>
-                    <header>
-                        {header}
-                        <Button
-                            width="115px"
-                            height="34px"
-                            bg="#d3c1ab"
-                            radius="3px"
-                            className="close"
-                            onClick={close}
-                        >
-                            {" "}
-                            &times;{" "}
-                        </Button>
-                    </header>
+                    <header>{header}</header>
                     <main>
                         <Grid padding="10px 20px">
                             <Input
@@ -78,24 +65,29 @@ const ReviewWrite = props => {
                             ></Input>
                         </Grid>
 
-                        <Grid padding="5px 20px">
+                        <Grid padding="5px 20px" is_flex>
                             <Button
                                 _onClick={() => addPost()}
                                 width="115px"
                                 height="34px"
                                 bg="#d3c1ab"
                                 radius="3px"
+                                hoverBg="#ff7c98"
                             >
                                 작성하기
                             </Button>
+                            <Button
+                                className="close"
+                                _onClick={close}
+                                width="115px"
+                                height="34px"
+                                bg="#6c757d"
+                                radius="3px"
+                            >
+                                close
+                            </Button>
                         </Grid>
                     </main>
-                    <footer>
-                        <button className="close" onClick={close}>
-                            {" "}
-                            close{" "}
-                        </button>
-                    </footer>
                 </section>
             ) : null}
         </div>
