@@ -184,7 +184,6 @@ const Title = styled.div`
     margin: 70px auto;
     width: 100%;
     text-align: center;
-    /* text-align: center; */
 `;
 
 const Store = styled.img`
