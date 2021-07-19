@@ -85,7 +85,7 @@ const Header = () => {
                                 <Link to="/">FLAVOL OF THE MONTH</Link>
                             </li>
                             <li>
-                                <Link to="/menu">MENU</Link>
+                                <Link to="/menu/icecream">MENU</Link>
                             </li>
                             <li>
                                 <Link to="/event">EVENT</Link>
