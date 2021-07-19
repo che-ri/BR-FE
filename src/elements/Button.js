@@ -16,81 +16,110 @@ import styled from "styled-components";
  * @returns
  */
 
-const Button = (props) => {
-  const { _onClick,children, margin, width, height, padding,  shape, bg, color, radius} = props; //shape- circle or oval
+const Button = props => {
+    const {
+        _onClick,
+        children,
+        margin,
+        width,
+        height,
+        padding,
+        shape,
+        bg,
+        color,
+        radius,
+        hoverBg,
+    } = props; //shape- circle or oval
 
-  const styles = {
-    margin: margin,
-    width: width,
-    height: height,
-    padding: padding,
-    color : color,
-    bg : bg,
-    radius: radius,
-  };
-  if (shape === "circle") {
-    return(
-        <React.Fragment>
-            <ButtonCircle {...styles} onClick={_onClick}>{children}</ButtonCircle>
-        </React.Fragment>
-    ) 
-  }
+    const styles = {
+        margin: margin,
+        width: width,
+        height: height,
+        padding: padding,
+        color: color,
+        bg: bg,
+        hoverBg,
+        radius: radius,
+    };
+    if (shape === "circle") {
+        return (
+            <React.Fragment>
+                <ButtonCircle {...styles} onClick={_onClick}>
+                    {children}
+                </ButtonCircle>
+            </React.Fragment>
+        );
+    }
 
-  if (shape === "oval") {
+    if (shape === "oval") {
+        return (
+            <React.Fragment>
+                <ButtonOval {...styles} onClick={_onClick}>
+                    {children}
+                </ButtonOval>
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
-            <ButtonOval {...styles} onClick={_onClick}>{children}</ButtonOval>
+            <ButtonOval {...styles} onClick={_onClick}>
+                {children}
+            </ButtonOval>
         </React.Fragment>
-
     );
-    
-  }
-  
-  return (
-    <React.Fragment>
-      <ButtonOval {...styles} onClick={_onClick}>
-        {children}
-      </ButtonOval>
-    </React.Fragment>
-  );
-
 };
 Button.defaultProps = {
-  children: null,
-  _onClick: () => {},
-  is_float: false,
-  margin: false,
-  width: "100%",
-  padding: "10px 0px",
+    children: null,
+    _onClick: () => {},
+    is_float: false,
+    margin: false,
+    width: "100%",
+    padding: "10px 0px",
+    hoverBg: false,
 };
 
-
 const ButtonCircle = styled.button`
-  width: 45px;
-  height: 45px;
-  border-radius: 50px;
-  background-color: ${(props) => props.bg};
-  color: ${(props) => props.color};
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: 0.3px solid #d3c1ab;
-  ${(props) => (props.bg ? `background-color: ${props.bg};` : "background-color: #fff ")};
-
+    width: 45px;
+    height: 45px;
+    border-radius: 50px;
+    background-color: ${props => props.bg};
+    color: ${props => props.color};
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 0.3px solid #d3c1ab;
+    ${props =>
+        props.bg
+            ? `background-color: ${props.bg};`
+            : "background-color: #fff "};
+    :hover {
+        ${props => (props.hoverBg ? `background:${props.hoverBg};` : "")};
+    }
 `;
 
 //default Button
-const ButtonOval = styled.button` 
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  ${(props) => (props.bg ? `background-color: ${props.bg};` : "background-color: #ff7c98")};
-  color: #fff;
-  padding: ${(props) => props.padding};
-  ${(props) => (props.radius ? `border-radius: ${props.radius};` : "border-radius: 20px")};
-  box-sizing: border-box;
-  border: none;
-  ${(props) => (props.margin ? `margin: ${props.margin};` : "")}
+const ButtonOval = styled.button`
+    width: ${props => props.width};
+    height: ${props => props.height};
+    ${props =>
+        props.bg
+            ? `background-color: ${props.bg};`
+            : "background-color: #ff7c98"};
+    color: #fff;
+    padding: ${props => props.padding};
+    ${props =>
+        props.radius
+            ? `border-radius: ${props.radius};`
+            : "border-radius: 20px"};
+    box-sizing: border-box;
+    border: none;
+    ${props => (props.margin ? `margin: ${props.margin};` : "")}
+    cursor: pointer;
+    :hover {
+        ${props => (props.hoverBg ? `background:${props.hoverBg};` : "")};
+    }
 `;
 export default Button;
