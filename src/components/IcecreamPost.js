@@ -9,7 +9,8 @@ const IcecreamPost = ({ title, image, hashTags }) => {
                 <Title>{title}</Title>
                 <HashTag>
                     {hashTags.map((item, idx) => {
-                        if (idx < 2) return <span>{`#${item.hashtag} `}</span>;
+                        if (idx < 2)
+                            return <span key={idx}>{`#${item.hashtag} `}</span>;
                     })}
                 </HashTag>
                 <Img>

@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const url = "https://bestclone.herokuapp.com";
 const api = axios.create({
     baseURL: url,
     headers: {
-        authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImhhbGJlIiwiaWF0IjoxNjI2NTU4MDY0fQ.1VGoOT0fdkFdzw5MqQQMl0hvlA3nSXcK9kg_YPutyyA",
+        authorization: Cookies.get("token"),
     },
 });
 
@@ -19,9 +19,15 @@ const user = createSlice({
     name: "user",
     initialState,
     reducers: {
-        login: (state, action) => {},
-        logout: (state, action) => {},
-        loginCheck: (state, action) => {},
+        logout: (state, action) => {
+            Cookies.remove("token");
+            state.user_info = undefined;
+            state.is_login = false;
+        },
+        loginCheck: (state, action) => {
+            state.user_info = action.payload.user_info;
+            state.is_login = true;
+        },
     },
 });
 
@@ -38,19 +44,47 @@ export const signupSV =
                 passwordconfirm,
                 nickname,
             });
-            console.log(signup);
 
             //회원가입 실패!
             if (signup.data.ok === false) window.alert(signup.data.error);
             //회원가입 성공!
             else {
                 window.alert("회원가입 완료! 🍧");
-                history.push("/");
+                history.push("/login");
             }
         } catch (error) {
             console.log(error);
         }
     };
 
-export const { login, logout, loginCheck } = user.actions;
+//로그인
+export const loginSV =
+    (id, password) =>
+    async (dispatch, getState, { history }) => {
+        api.post("api/login", { id, password }).then(res => {
+            //로그인 실패!
+            const {
+                data: { token },
+            } = res;
+            if (res.data.ok === false) return window.alert(res.data.error);
+            Cookies.set("token", token, { expires: 7 });
+            window.alert("로그인 완료! 🍧");
+            window.location = "/";
+        });
+    };
+
+export const loginCheckSV =
+    () =>
+    async (dispatch, getState, { history }) => {
+        const token = Cookies.get("token");
+        if (token === undefined) return;
+        api.get("api/mypage", { token }).then(res => {
+            const {
+                data: { data: user_info },
+            } = res;
+            dispatch(loginCheck({ user_info }));
+        });
+    };
+
+export const { logout, loginCheck } = user.actions;
 export default user.reducer;
