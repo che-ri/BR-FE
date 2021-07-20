@@ -9,10 +9,9 @@ const api = axios.create({
 });
 
 // 모든 아이스크림 리스트
-
 export const getIcecreamList = page =>
     api.get(`menu/icecream/?page=${page}`).then(res => res);
 
-//제품디테일 페이지
+//아이스크림 디테일 페이지
 export const getIcecream = title =>
     api.get(`menu/icecream/${title}`).then(res => res);
