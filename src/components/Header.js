@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Inner from "../components/Inner";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../redux/modules/user";
 import {
     facebook,
     twitter,
@@ -13,6 +15,8 @@ import {
 } from "../asset/icon";
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const is_login = useSelector(state => state.user.is_login);
     return (
         <>
             <HeaderContainer>
@@ -68,16 +72,33 @@ const Header = () => {
             <NavContainer>
                 <Inner big isFlex>
                     <LeftNav>
-                        <ul>
-                            <li>
-                                <Link style={{ color: "#ff7c98" }} to="/login">
-                                    LOGIN
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/join">JOIN</Link>
-                            </li>
-                        </ul>
+                        {/* 로그인상태에 따른 메뉴 버튼 변화 */}
+                        {is_login ? (
+                            <ul>
+                                <li onClick={() => dispatch(logout())}>
+                                    <Link style={{ color: "#ff7c98" }} to="/">
+                                        LOOUT
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/mypage">MY PAGE</Link>
+                                </li>
+                            </ul>
+                        ) : (
+                            <ul>
+                                <li>
+                                    <Link
+                                        style={{ color: "#ff7c98" }}
+                                        to="/login"
+                                    >
+                                        LOGIN
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/join">JOIN</Link>
+                                </li>
+                            </ul>
+                        )}
                     </LeftNav>
                     <RightNav>
                         <ul>
