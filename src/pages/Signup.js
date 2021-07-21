@@ -91,7 +91,7 @@ const Signup = () => {
                             }}
                         />
                         <Text color="#a0623d" size="11px">
-                            {pwd === pwd_check
+                            {pwd !== pwd_check
                                 ? "비밀번호와 일치시켜주세요!"
                                 : ""}
                         </Text>
