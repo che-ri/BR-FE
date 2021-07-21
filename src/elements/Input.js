@@ -14,7 +14,7 @@ import { Grid } from "./index";
  * @returns
  */
 const Input = props => {
-    const { placeholder, _onChange, multiLine, type } = props;
+    const { placeholder, _onChange, multiLine, value, type } = props;
 
     if (multiLine) {
         return (
@@ -23,11 +23,17 @@ const Input = props => {
                 rows={10}
                 onChange={_onChange}
                 placeholder={placeholder}
+                value={value}
             />
         );
     }
     return (
-        <ElInput type={type} onChange={_onChange} placeholder={placeholder} />
+        <ElInput
+            type={type}
+            onChange={_onChange}
+            placeholder={placeholder}
+            value={value}
+        />
     );
 };
 

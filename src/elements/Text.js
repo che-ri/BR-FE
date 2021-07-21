@@ -14,9 +14,15 @@ import styled from "styled-components";
  * @returns
  */
 const Text = props => {
-    const { bold, color, size, children, margin } = props;
+    const { bold, color, size, children, margin, align } = props;
 
-    const styles = { bold: bold, color: color, size: size, margin };
+    const styles = {
+        bold: bold,
+        color: color,
+        size: size,
+        align: align,
+        margin: margin,
+    };
     return <P {...styles}>{children}</P>;
 };
 
@@ -33,7 +39,7 @@ const P = styled.p`
     font-size: ${props => props.size};
     font-weight: ${props => (props.bold ? "600" : "400")};
     ${props => (props.margin ? `margin: ${props.margin};` : "")}
-    align: ${props => props.align};
+    text-align: ${props => props.align};
 `;
 
 export default Text;

@@ -1,40 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Button } from "../elements";
 
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { addReviewDB } from "../redux/modules/review";
 
 import { spoon_left, spoon_right } from "../asset/icon";
-import Modal from "./ReviewWrite.js";
+import ModalWrite from "./ReviewWrite.js";
+import ModalDetail from "./ReviewDetail.js";
+
+import { getReviewList } from "../shared/api.js";
+
+import Inner from "../components/Inner";
+import { arrow_next, arrow_prev } from "../asset/icon";
+
 
 const Review = props => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [modalWriteOpen, setModalWriteOpen] = useState(false);
+    const [modalDetailOpen, setModalDetailOpen] = useState(false);
+    const [reviewId , setReviewId] = useState(0);
+    //로그인 여부로 확인해서 글쓰기 버튼 활성화 여부
+    const is_login = true;
+    const [list, setList] = useState([]);
+    const [page, setPage] = useState(1);
+    
 
-    const movePage = () => {
-        console.log("n번째 페이지로 이동");
-    };
-    const moveFourPagesNext = () => {
-        console.log("n+4번째 페이지로 이동");
-    };
-    const moveFourPagesPrev = () => {
-        console.log("n-4번째 페이지로 이동");
-    };
+    useEffect(() => {
+        async function getList() {
+            const {
+                data: { data: list },
+            } = await getReviewList(page);
+            setList(list);
+        }
+        return getList();
+    }, [page]);
 
-    const review_list = [
-        { idx: 1, title: "title1", date: "date1" },
-        { idx: 2, title: "title2", date: "date2" },
-    ];
+    let reviewList = list.reviews;
+    //const pageArr =  createArr(Number(list.totalPage));
+    let pageArr = new Array(list.totalPage);
+    pageArr.fill(0);
+    console.log(pageArr)
 
-    const openModal = () => {
-        setModalOpen(true);
-    };
-    const closeModal = () => {
-        setModalOpen(false);
-    };
+    const prevPage = (page) => {
+        if(page <= 4){
+            window.alert("페이지 이동 불가")
+            return;
+        }
+        if(page-1<= 4 * page){
+            page = page - 4
+        }
+        setPage(page=> page-4);
+    }
 
+    const nextPage = (page) => {
+        if(page >= list.totalPage){
+            page= list.totalPage
+            return;
+        }
+        if(4 * (page+1) < page+1){
+            page = page + 4
+        }
+        setPage(page=> page+4);
+    }
+
+    const openWriteModal = () => {
+        setModalWriteOpen(true);
+    };
+    const closeWriteModal = () => {
+        setModalWriteOpen(false);
+    };
+    const openDetailModal = (id) => {
+        setModalDetailOpen(true);
+        setReviewId(id);
+
+    };
+    const closeDetailModal = () => {
+        setModalDetailOpen(false);
+    };
+    
     return (
         <>
+        
             <Grid width="900px" margin="0px auto">
                 <Title>
                     <img
@@ -44,9 +88,13 @@ const Review = props => {
                 </Title>
                 <Grid width="100%">
                     <BntBox>
-                        <Button
+                        <Button 
                             _onClick={() => {
-                                openModal();
+                                if(!is_login){
+                                    window.alert("로그인후 이용해주세요 😊")
+                                    return 
+                                }
+                                openWriteModal();
                             }}
                             width="115px"
                             height="34px"
@@ -57,74 +105,108 @@ const Review = props => {
                         </Button>
                     </BntBox>
                 </Grid>
-                {/* <Grid is_flex>
-                    <Grid>
-                        <p>
-                            총 <span color="#ff7c98">{props.postCnt} 53</span>
-                            건이 검색되었습니다.
-                        </p>
-                    </Grid>
-                    <Grid is_flex>
-                        <Select name="search">
-                            <option value="전체" selected>
-                                전체
-                            </option>
-                            <option value="제목">제목</option>
-                            <option value="내용">내용</option>
-                        </Select>
-                        <Input />
-                        <Button
-                            width="115px"
-                            height="34px"
-                            bg="#d3c1ab"
-                            radius="3px"
-                            margin="0 0 0 3px"
-                        >
-                            검색
-                        </Button>
-                    </Grid>
-                </Grid> */}
 
                 <Grid>
                     <Line />
 
-                    {review_list.map((p, idx) => {
+                    { reviewList ? reviewList.map((p, idx) => {
                         return (
                             <>
-                                <Grid is flex margin="0 auto">
+                                <Grid is flex margin="0 auto"
+                                 _onClick={()=>{
+                                    openDetailModal(p.id);
+                                 }} key={idx}
+                                >
+
                                     <TR>
                                         <TD
                                             width="72px"
                                             height="75px"
                                             margin="10px 20px"
                                         >
-                                            {idx}
+                                            {(list.total - 7*(page-1))-idx}
                                         </TD>
-                                        <TD width="85%" height="75px">
+                                        <TD width="85%" height="75px" align="left">
                                             {p.title}
                                         </TD>
                                         <TD
-                                            width="91px"
+                                            width="200px"
                                             height="75px"
                                             margin="5px"
                                         >
-                                            {p.date}
+                                            {p.createdAt.split('T')[0]}
                                         </TD>
                                     </TR>
                                 </Grid>
-
-                                {/*</Grid>*/}
                             </>
                         );
-                    })}
+                    }): console.log("게시물이 0건입니다.")}
 
-                    <Modal
-                        open={modalOpen}
-                        close={closeModal}
+                        <Container>
+                            <Inner big>
+                                <ButtonContainer>
+                                <button onClick={ () =>{
+                                    if(page <= 4){
+                                        if(page === 1){
+                                            window.alert("첫번째 페이지 입니다.")
+                                            return 
+                                        }
+                                        setPage(1)
+                                        return
+                                    } 
+                                    prevPage()
+                                  }
+                                }>
+                                        
+                                <img src={arrow_prev} alt="prev"/>
+                                </button>
+                                {pageArr.map((p, idx) => {                                    
+                                    return (
+                                        <>
+                                        <button onClick={ () =>
+                                            setPage(idx+1)
+                                        }>
+                                            {idx+1}
+                                        </button>
+                                        </>
+                                    )
+                                })
+                                }
+                                <button onClick={ () =>{
+                                    if(page+4 >= list.totalPage ) {
+                                        if(page === 7){
+                                            window.alert("마지막 페이지입니다.")
+                                            return 
+                                        }
+                                        setPage(list.totalPage)
+                                        return
+                                    }
+                                    nextPage()
+                                  }
+                                }>
+                                    <img src={arrow_next} alt="next" />
+                                </button>
+                                </ButtonContainer>
+                            </Inner>
+                        </Container>
+
+
+
+                    <ModalWrite
+                        open={modalWriteOpen}
+                        close={closeWriteModal}
                         header="리뷰 작성하기"
                     >
                         {/* ReviewWrite.js <main></main>에 내용이 출력된다.*/}
-                    </Modal>
+                    </ModalWrite>
+                    <ModalDetail
+                        open={modalDetailOpen}
+                        close={closeDetailModal}
+                        header="리뷰 상세보기"
+                        reviewId = {reviewId}
+                    >
+                        {/* ReviewDetail.js <main></main>에 내용이 출력된다.*/}
+                    </ModalDetail>
                 </Grid>
             </Grid>
         </>
@@ -179,41 +261,24 @@ const Select = styled.select`
     height: 34px;
 `;
 
-const Input = styled.input`
-    width: 236px;
-    height: 34px;
-    padding: 8px 1px 8px 10px;
-    border: 0;
-    background: #efefef;
-    font-size: 13px;
-    line-height: 16px;
-    box-sizing: border-box;
-`;
-
 const TR = styled.tr`
     border-bottom: 1px solid #dadada;
     text-align: center;
     color: #2f231c;
     font-size: 13px;
     margin-top: 10px;
+    color: #948780;
 `;
 
 const TD = styled.td`
     border-bottom: 1px solid #dadada;
-    text-align: center;
     color: #2f231c;
     font-size: 13px;
     padding: 20px 0 0 0;
+    color: #948780
+    ${(props) => (props.align ? `text-align: ${props.align};` : "center")}
 `;
 
-const ArrowButton = styled.div`
-    width: 45px;
-    height: 45px;
-    display: flex;
-    background: url(${props => props.icon_url});
-    background-size: cover;
-    cursor: pointer;
-`;
 
 const BntBox = styled.div`
     width: 100%;
@@ -222,5 +287,32 @@ const BntBox = styled.div`
     padding-bottom: 5px;
     button:hover {
         background: #ff7c98;
+    }
+`;
+
+
+const Container = styled.div`
+    width: 100%;
+`;
+
+const ButtonContainer = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid #e4dbd7;
+        cursor: pointer;
+        background: #fff;
+        margin: 0 5px;
+        font-size: 11px;
+        :not(:first-child, :last-child):focus {
+            background: #f56f98;
+            border: 1px solid #f56f98;
+            color: #fff;
+        }
     }
 `;
