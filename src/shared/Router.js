@@ -12,6 +12,7 @@ import Store from "../pages/Store";
 import Review from "../pages/Review";
 import ReviewDetail from "../pages/ReviewDetail";
 import ReviewWrite from "../pages/ReviewWrite";
+import SearchResult from "../pages/SearchResult";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Mypage from "../pages/Mypage";
@@ -38,6 +39,7 @@ const AppRouter = () => {
                         path="/review/write/:id"
                         component={ReviewWrite}
                     />
+                    <Route exact path="/search" component={SearchResult} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/join" component={Signup} />
                     <Route exact path="/mypage" component={Mypage} />
