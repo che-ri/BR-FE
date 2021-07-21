@@ -73,17 +73,13 @@ const Login = props => {
                     <A href="https://www.happypointcard.com/page/member-info/find-id-pw-form.spc?findType=pw">
                         &nbsp;비밀번호 찾기
                     </A>
-                    <Button
-                        _onClick={() => {
+                    <A
+                        onClick={() => {
                             signup();
                         }}
-                        width="100px"
-                        bg="#FFF"
-                        hoverBg="#d3c1ab"
-                        color="black"
                     >
                         회원가입
-                    </Button>
+                    </A>
                 </Controls>
             </Grid>
         </>
@@ -94,16 +90,15 @@ export default Login;
 
 const A = styled.a`
     color: black;
+    cursor: pointer;
     &:hover {
         color: #d3c1ab;
-    }
-    :not(:last-child) {
-        margin-right: 30px;
     }
 `;
 
 const Controls = styled.div`
+    padding: 0 50px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 `;
