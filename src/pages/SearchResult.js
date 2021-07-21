@@ -8,7 +8,6 @@ import IcecreamPost from "../components/IcecreamPost";
 
 const SearchResult = props => {
     const result = useSelector(state => state.search.result);
-    console.log(result);
     return (
         <>
             <Title>
