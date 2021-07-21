@@ -77,6 +77,7 @@ Button.defaultProps = {
     width: "100%",
     padding: "10px 0px",
     hoverBg: false,
+    is_login: true,
 };
 
 const ButtonCircle = styled.button`
