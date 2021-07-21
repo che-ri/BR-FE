@@ -72,9 +72,9 @@ export const loginSV =
             if (res.data.ok === false) return window.alert(res.data.error);
             Cookies.set("token", token, { expires: 7 });
             window.alert("로그인 완료! 🍧");
-            // window.location = "/";
-            dispatch(login());
-            history.push("/");
+            window.location = "/";
+            // dispatch(login());
+            // history.push("/");
         });
     };
 
