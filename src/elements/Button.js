@@ -63,10 +63,12 @@ const Button = props => {
 
     return (
         <React.Fragment>
-            <ButtonOval {...styles} onClick={_onClick}>
-                {children}
-            </ButtonOval>
+                <ButtonOval {...styles} onClick={_onClick}>
+                    {children}
+                </ButtonOval>
         </React.Fragment>
+        
+
     );
 };
 Button.defaultProps = {
@@ -77,6 +79,7 @@ Button.defaultProps = {
     width: "100%",
     padding: "10px 0px",
     hoverBg: false,
+    is_login: true,
 };
 
 const ButtonCircle = styled.button`
@@ -121,5 +124,6 @@ const ButtonOval = styled.button`
     :hover {
         ${props => (props.hoverBg ? `background:${props.hoverBg};` : "")};
     }
+
 `;
 export default Button;
