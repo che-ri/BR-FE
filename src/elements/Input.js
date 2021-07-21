@@ -15,19 +15,20 @@ import { Grid } from "./index";
  */
 const Input = (props) => {
   const {
-    placeholder, _onChange, multiLine,
+    placeholder, _onChange, multiLine, value,
     type,} = props;
-
+    
   if (multiLine) {
     return (
         <ElTextarea type={type} rows={10}
         onChange={_onChange}
         placeholder={placeholder}
+        value={value} 
          />
     );    
   }
   return (
-          <ElInput type={type} onChange={_onChange} placeholder={placeholder}  />
+          <ElInput type={type} onChange={_onChange} placeholder={placeholder} value={value}  />
   );
 };
 
