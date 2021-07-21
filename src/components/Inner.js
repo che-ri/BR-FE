@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Inner = ({ children, big, small, isFlex, padding }) => {
-    const styles = { isFlex, padding };
+const Inner = ({ children, big, small, isFlex, padding, center }) => {
+    const styles = { isFlex, padding, center };
     if (big)
         return (
             <Container big {...styles}>
@@ -25,6 +25,7 @@ Inner.defaultProps = {
     small: false,
     isFlex: false,
     padding: false,
+    center: false,
 };
 
 const Container = styled.div`
@@ -40,6 +41,10 @@ const Container = styled.div`
         props.isFlex
             ? `display:flex; justify-content:space-between; align-items:center;`
             : ""}
+    ${props =>
+        props.center
+            ? `display:flex; justify-content:center; align-items:center;`
+            : ""}   
     ${props => (props.padding ? `padding:${props.padding}` : "")}
 `;
 
