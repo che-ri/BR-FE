@@ -44,6 +44,9 @@ a {
 button {
   border: 0;
 }
+th{
+    text-align:initial;
+}
 body{
   background-color: #fff;
   font-size:12px;

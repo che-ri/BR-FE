@@ -12,35 +12,35 @@ const api = axios.create({
 // 모든 아이스크림 리스트
 export const getIcecreamList = page =>
     api.get(`menu/icecream/?page=${page}`).then(res => {
-        console.log("*IcecreamList=>",res)
+        console.log("*IcecreamList=>", res);
         return res;
     });
-    
 
 //아이스크림 디테일 페이지
 export const getIcecream = title =>
     api.get(`menu/icecream/${title}`).then(res => {
-        console.log("getIcecream=>",res);
+        console.log("getIcecream=>", res);
         return res;
     });
 
 //페이지별 리뷰 불러오기
 export const getReviewList = page =>
-    api.get(`review/?page=${page}`).then((res) => {
-        console.log("*GetreviewList=>",res);
+    api.get(`review/?page=${page}`).then(res => {
+        console.log("*GetreviewList=>", res);
         return res;
     });
 // 리뷰 디테일 페이지
 export const getReviewDetail = newId =>
-    api.get(`review/${newId}`).then((res) => {
+    api.get(`review/${newId}`).then(res => {
         return res;
     });
-
 
 //제품 리뷰적기
-export const setReview = (title, description)=>
-    api.post("/review/write", {title, description}).then(res=> {
-        console.log("*SetReview_res",res)
+export const setReview = (title, description) =>
+    api.post("/review/write", { title, description }).then(res => {
+        console.log("*SetReview_res", res);
         return res;
     });
 
+//스토어 정보
+export const getStoreInfo = () => api.get("/api/markets").then(res => res);
