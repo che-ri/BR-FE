@@ -63,12 +63,10 @@ const Button = props => {
 
     return (
         <React.Fragment>
-                <ButtonOval {...styles} onClick={_onClick}>
-                    {children}
-                </ButtonOval>
+            <ButtonOval {...styles} onClick={_onClick}>
+                {children}
+            </ButtonOval>
         </React.Fragment>
-        
-
     );
 };
 Button.defaultProps = {
@@ -124,6 +122,5 @@ const ButtonOval = styled.button`
     :hover {
         ${props => (props.hoverBg ? `background:${props.hoverBg};` : "")};
     }
-
 `;
 export default Button;
