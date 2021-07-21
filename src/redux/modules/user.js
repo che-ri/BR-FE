@@ -19,6 +19,9 @@ const user = createSlice({
     name: "user",
     initialState,
     reducers: {
+        login: (state, action) => {
+            state.is_login = true;
+        },
         logout: (state, action) => {
             Cookies.remove("token");
             state.user_info = undefined;
@@ -69,7 +72,9 @@ export const loginSV =
             if (res.data.ok === false) return window.alert(res.data.error);
             Cookies.set("token", token, { expires: 7 });
             window.alert("로그인 완료! 🍧");
-            window.location = "/";
+            // window.location = "/";
+            dispatch(login());
+            history.push("/");
         });
     };
 
@@ -86,5 +91,5 @@ export const loginCheckSV =
         });
     };
 
-export const { logout, loginCheck } = user.actions;
+export const { logout, loginCheck, login } = user.actions;
 export default user.reducer;
