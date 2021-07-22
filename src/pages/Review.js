@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button } from "../elements";
 import Inner from "../components/Inner";
+import Loader from "../components/Loader";
 import styled from "styled-components";
 import { spoon_left, spoon_right } from "../asset/icon";
 import { arrow_next, arrow_prev } from "../asset/icon";
@@ -21,6 +22,7 @@ const Review = props => {
     const is_login = useSelector(state => state.user.is_login);
 
     const [list, setList] = useState([]);
+    const [is_loading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
 
     useEffect(() => {
@@ -28,6 +30,8 @@ const Review = props => {
             const {
                 data: { data: list },
             } = await getReviewList(page);
+            if (!list) return;
+            setIsLoading(true);
             setList(list);
         }
         return getList();
@@ -77,158 +81,170 @@ const Review = props => {
     };
     return (
         <>
-            <Grid width="900px" margin="0px auto">
-                <Title>
-                    <img
-                        src={require("../asset/title/h_notice.png").default}
-                        alt="제목명"
-                    />
-                </Title>
-                <Grid width="100%">
-                    <BntBox>
-                        <Button
-                            _onClick={() => {
-                                if (!is_login) {
-                                    window.alert("로그인후 이용해주세요 😊");
-                                    return;
-                                }
-                                openWriteModal();
-                            }}
-                            width="115px"
-                            height="34px"
-                            bg="#d3c1ab"
-                            radius="3px"
+            {is_loading ? (
+                <Grid width="900px" margin="0px auto">
+                    <Title>
+                        <img
+                            src={require("../asset/title/h_notice.png").default}
+                            alt="제목명"
+                        />
+                    </Title>
+                    <Grid width="100%">
+                        <BntBox>
+                            <Button
+                                _onClick={() => {
+                                    if (!is_login) {
+                                        window.alert(
+                                            "로그인후 이용해주세요 😊"
+                                        );
+                                        return;
+                                    }
+                                    openWriteModal();
+                                }}
+                                width="115px"
+                                height="34px"
+                                bg="#d3c1ab"
+                                radius="3px"
+                            >
+                                글쓰기
+                            </Button>
+                        </BntBox>
+                    </Grid>
+
+                    <Grid>
+                        <Line />
+
+                        {reviewList
+                            ? reviewList.map((p, idx) => {
+                                  return (
+                                      <>
+                                          <Grid
+                                              is
+                                              flex
+                                              margin="0 auto"
+                                              _onClick={() => {
+                                                  if (
+                                                      user_info &&
+                                                      user_info.id === p.userId
+                                                  ) {
+                                                      setUserConfirm(true);
+                                                      openDetailModal(p.id);
+                                                  } else {
+                                                      openDetailModal(p.id);
+                                                  }
+                                              }}
+                                              key={p.id}
+                                          >
+                                              <TR>
+                                                  <TD
+                                                      width="72px"
+                                                      height="75px"
+                                                      margin="10px 20px"
+                                                  >
+                                                      {list.total -
+                                                          7 * (page - 1) -
+                                                          idx}
+                                                  </TD>
+                                                  <TD
+                                                      width="80%"
+                                                      height="75px"
+                                                      align="left"
+                                                  >
+                                                      {p.title}
+                                                  </TD>
+                                                  <TD
+                                                      width="200px"
+                                                      height="75px"
+                                                      margin="5px"
+                                                  >
+                                                      {
+                                                          p.createdAt.split(
+                                                              "T"
+                                                          )[0]
+                                                      }
+                                                  </TD>
+                                              </TR>
+                                          </Grid>
+                                      </>
+                                  );
+                              })
+                            : "게시물이 0건입니다."}
+
+                        <Container>
+                            <Inner big>
+                                <ButtonContainer>
+                                    <button
+                                        onClick={() => {
+                                            if (page <= 4) {
+                                                if (page === 1) {
+                                                    window.alert(
+                                                        "첫번째 페이지 입니다."
+                                                    );
+                                                    return;
+                                                }
+                                                setPage(1);
+                                                return;
+                                            }
+                                            prevPage();
+                                        }}
+                                    >
+                                        <img src={arrow_prev} alt="prev" />
+                                    </button>
+                                    {pageArr.map((p, idx) => {
+                                        return (
+                                            <>
+                                                <button
+                                                    onClick={() =>
+                                                        setPage(idx + 1)
+                                                    }
+                                                >
+                                                    {idx + 1}
+                                                </button>
+                                            </>
+                                        );
+                                    })}
+                                    <button
+                                        onClick={() => {
+                                            if (page + 4 >= list.totalPage) {
+                                                if (page === 7) {
+                                                    window.alert(
+                                                        "마지막 페이지입니다."
+                                                    );
+                                                    return;
+                                                }
+                                                setPage(list.totalPage);
+                                                return;
+                                            }
+                                            nextPage();
+                                        }}
+                                    >
+                                        <img src={arrow_next} alt="next" />
+                                    </button>
+                                </ButtonContainer>
+                            </Inner>
+                        </Container>
+
+                        <ModalWrite
+                            open={modalWriteOpen}
+                            close={closeWriteModal}
+                            header="리뷰 작성하기"
                         >
-                            글쓰기
-                        </Button>
-                    </BntBox>
+                            {/* ReviewWrite.js <main></main>의 내용 출력*/}
+                        </ModalWrite>
+                        <ModalDetail
+                            open={modalDetailOpen}
+                            close={closeDetailModal}
+                            header="리뷰 상세보기"
+                            reviewId={reviewId}
+                            userConfirm={userConfirm}
+                        >
+                            {/* ReviewDetail.js <main></main>의 내용 출력*/}
+                        </ModalDetail>
+                    </Grid>
                 </Grid>
-
-                <Grid>
-                    <Line />
-
-                    {reviewList
-                        ? reviewList.map((p, idx) => {
-                              return (
-                                  <>
-                                      <Grid
-                                          is
-                                          flex
-                                          margin="0 auto"
-                                          _onClick={() => {
-                                              if (
-                                                  user_info &&
-                                                  user_info.id === p.userId
-                                              ) {
-                                                  setUserConfirm(true);
-                                                  openDetailModal(p.id);
-                                              } else {
-                                                  openDetailModal(p.id);
-                                              }
-                                          }}
-                                          key={p.id}
-                                      >
-                                          <TR>
-                                              <TD
-                                                  width="72px"
-                                                  height="75px"
-                                                  margin="10px 20px"
-                                              >
-                                                  {list.total -
-                                                      7 * (page - 1) -
-                                                      idx}
-                                              </TD>
-                                              <TD
-                                                  width="80%"
-                                                  height="75px"
-                                                  align="left"
-                                              >
-                                                  {p.title}
-                                              </TD>
-                                              <TD
-                                                  width="200px"
-                                                  height="75px"
-                                                  margin="5px"
-                                              >
-                                                  {p.createdAt.split("T")[0]}
-                                              </TD>
-                                          </TR>
-                                      </Grid>
-                                  </>
-                              );
-                          })
-                        : "게시물이 0건입니다."}
-
-                    <Container>
-                        <Inner big>
-                            <ButtonContainer>
-                                <button
-                                    onClick={() => {
-                                        if (page <= 4) {
-                                            if (page === 1) {
-                                                window.alert(
-                                                    "첫번째 페이지 입니다."
-                                                );
-                                                return;
-                                            }
-                                            setPage(1);
-                                            return;
-                                        }
-                                        prevPage();
-                                    }}
-                                >
-                                    <img src={arrow_prev} alt="prev" />
-                                </button>
-                                {pageArr.map((p, idx) => {
-                                    return (
-                                        <>
-                                            <button
-                                                onClick={() => setPage(idx + 1)}
-                                            >
-                                                {idx + 1}
-                                            </button>
-                                        </>
-                                    );
-                                })}
-                                <button
-                                    onClick={() => {
-                                        if (page + 4 >= list.totalPage) {
-                                            if (page === 7) {
-                                                window.alert(
-                                                    "마지막 페이지입니다."
-                                                );
-                                                return;
-                                            }
-                                            setPage(list.totalPage);
-                                            return;
-                                        }
-                                        nextPage();
-                                    }}
-                                >
-                                    <img src={arrow_next} alt="next" />
-                                </button>
-                            </ButtonContainer>
-                        </Inner>
-                    </Container>
-
-                    <ModalWrite
-                        open={modalWriteOpen}
-                        close={closeWriteModal}
-                        header="리뷰 작성하기"
-                    >
-                        {/* ReviewWrite.js <main></main>의 내용 출력*/}
-                    </ModalWrite>
-                    <ModalDetail
-                        open={modalDetailOpen}
-                        close={closeDetailModal}
-                        header="리뷰 상세보기"
-                        reviewId={reviewId}
-                        userConfirm={userConfirm}
-                    >
-                        {/* ReviewDetail.js <main></main>의 내용 출력*/}
-                    </ModalDetail>
-                </Grid>
-            </Grid>
+            ) : (
+                <Loader />
+            )}
         </>
     );
 };

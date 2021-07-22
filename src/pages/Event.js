@@ -5,6 +5,7 @@ import { spoon_left, spoon_right } from "../asset/icon";
 import { Grid } from "../elements";
 import { getEventList } from "../shared/api.js";
 import EventPost from "../components/EventPost.js";
+import Loader from "../components/Loader";
 
 const Event = () => {
     const [list, setList] = useState([]);
@@ -19,22 +20,27 @@ const Event = () => {
 
     return (
         <>
-            <Title>
-                <img
-                    src={require("../asset/title/h_title.png").default}
-                    alt="event"
-                />
-            </Title>
-
-            <Grid width="1200px" margin="0 auto">
-                <EventList>
-                    {list.length > 0
-                        ? list.map((item, idx) => (
-                              <EventPost key={idx} {...item} />
-                          ))
-                        : ""}
-                </EventList>
-            </Grid>
+            {list.length > 1 ? (
+                <>
+                    <Title>
+                        <img
+                            src={require("../asset/title/h_title.png").default}
+                            alt="event"
+                        />
+                    </Title>
+                    <Grid width="1200px" margin="0 auto">
+                        <EventList>
+                            {list.length > 0
+                                ? list.map((item, idx) => (
+                                      <EventPost key={idx} {...item} />
+                                  ))
+                                : ""}
+                        </EventList>
+                    </Grid>
+                </>
+            ) : (
+                <Loader />
+            )}
         </>
     );
 };

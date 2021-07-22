@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import imagesrc from "../asset/icon/icon_map_marker_.png";
+import Loader from "../components/Loader";
 import { getStoreInfo } from "../shared/api";
 
 const Store = () => {
     const { kakao } = window;
+    const [is_loading, setIsLoaindg] = useState(false);
     useEffect(() => {
         //카카오 지도생성
         async function getStore() {
             const { data } = await getStoreInfo();
-
+            if (!data) return;
+            setIsLoaindg(true);
             const container = document.getElementById("map");
 
             const options = {
@@ -80,7 +83,11 @@ const Store = () => {
     }, []);
     return (
         <Container>
-            <div id="map" style={{ width: "100%", height: "100vh" }}></div>
+            {is_loading ? (
+                <div id="map" style={{ width: "100%", height: "100vh" }}></div>
+            ) : (
+                <Loader />
+            )}
         </Container>
     );
 };
