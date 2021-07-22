@@ -197,10 +197,10 @@ const Header = () => {
                                 #꿀.바.망
                             </a>
                             <a onClick={e => clickHash(e.target.innerText)}>
-                                #꿀.바.망미니언즈케이크
+                                #머스크메론
                             </a>
                             <a onClick={e => clickHash(e.target.innerText)}>
-                                #허니망고라떼
+                                #월넛
                             </a>
                         </PopularHash>
                         <span style={{ gridColumn: "1/2", gridRow: "3/4" }}>
