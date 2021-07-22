@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 const url = "https://bestclone.herokuapp.com";
 const api = axios.create({
@@ -49,10 +50,10 @@ export const signupSV =
             });
 
             //회원가입 실패!
-            if (signup.data.ok === false) window.alert(signup.data.error);
+            if (signup.data.ok === false) toast(`${signup.data.error} 🍧`);
             //회원가입 성공!
             else {
-                window.alert("회원가입 완료! 🍧");
+                toast("회원가입 완료! 🍧");
                 history.push("/login");
             }
         } catch (error) {
@@ -69,9 +70,9 @@ export const loginSV =
             const {
                 data: { token },
             } = res;
-            if (res.data.ok === false) return window.alert(res.data.error);
+            if (res.data.ok === false) return toast(`${res.data.error} 🍧`);
             Cookies.set("token", token, { expires: 7 });
-            window.alert("로그인 완료! 🍧");
+            toast("로그인 완료! 🍧");
             window.location = "/";
             // dispatch(login());
             // history.push("/");

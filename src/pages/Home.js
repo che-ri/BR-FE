@@ -6,9 +6,10 @@ import Slider from "../components/Slider";
 import Inner from "../components/Inner";
 
 import main_banner1 from "../asset/mainBnr/1620351475.png";
-import main_banner2 from "../asset/mainBnr/1620379522.jpg";
-import main_banner3 from "../asset/mainBnr/1630631572.jpg";
-import main_banner4 from "../asset/mainBnr/1638847240.png";
+import main_banner2 from "../asset/mainBnr/1654582031.png";
+import main_banner3 from "../asset/mainBnr/1620379522.jpg";
+import main_banner4 from "../asset/mainBnr/1630631572.jpg";
+import main_banner5 from "../asset/mainBnr/1638847240.png";
 
 const Home = () => {
     return (
@@ -17,12 +18,17 @@ const Home = () => {
             <Container>
                 <Inner style={{ position: "relative" }}>
                     <Slider
+                        dots={true}
                         show={1}
+                        scroll={1}
+                        autoplay={true}
+                        autoplaySpeed={2000}
                         items={[
                             { url: main_banner1 },
                             { url: main_banner2 },
                             { url: main_banner3 },
                             { url: main_banner4 },
+                            { url: main_banner5 },
                         ]}
                     />
                 </Inner>
@@ -36,7 +42,10 @@ const Home = () => {
             <Container style={{ marginBottom: "100px" }}>
                 <Inner big>
                     <Slider
+                        dots={true}
                         show={3}
+                        scroll={3}
+                        multi
                         items={[
                             {
                                 url: require("../asset/mainBnr/br_event1.png")
@@ -168,7 +177,6 @@ const Home = () => {
 };
 
 const Container = styled.div`
-    height: max-content;
     width: 100%;
 `;
 

@@ -7,29 +7,31 @@ import "slick-carousel/slick/slick-theme.css";
 const imgUrl = require("../asset/mainBnr/1620351475.png").default;
 
 export default function SimpleSlider({
+    dots,
     items,
     show,
-    title,
-    process,
-    online,
-    store,
-    position,
+    scroll,
+    multi,
+    autoplay,
+    autoplaySpeed,
 }) {
     const settings = {
-        dots: true,
+        dots: dots,
         infinite: true,
         speed: 500,
         slidesToShow: show,
-        slidesToScroll: 3,
-        arrows: true,
-        centerMode: true,
+        slidesToScroll: scroll,
+        multi,
+        autoplay,
+        autoplaySpeed,
     };
+
     return (
         <Container>
             <StyledSlider {...settings}>
                 {items.map((item, idx) => (
                     <div key={idx}>
-                        <ImageContainer>
+                        <ImageContainer {...settings}>
                             <Image src={item.url} />
                             {item.event === "online" ? (
                                 <Event
@@ -63,6 +65,7 @@ export default function SimpleSlider({
 
 SimpleSlider.defaultProps = {
     items: [imgUrl, imgUrl],
+    multi: false,
 };
 
 const Container = styled.div`
@@ -70,30 +73,71 @@ const Container = styled.div`
 `;
 
 const StyledSlider = styled(Slider)`
-    .slick-slide div {
+    ${props =>
+        !props.multi
+            ? `.slick-slide div {
         outline: none;
     }
     .slick-dots {
-        /* bottom: 20px; */
+        bottom: 30px;
         li {
+            width: 30px;
+            &.slick-active{
+                button:before{
+                    color:black;}
+                }
             button {
+                
                 &:before {
                     color: white;
+                    font-size: 15px;
                 }
             }
         }
     }
+    .slick-prev,
+    .slick-next {
+        :before {
+            font-size: 100px;
+        }
+    }
+    .slick-prev {
+        left: 50px;
+        z-index: 10;
+    }
+    .slick-next {
+        right: 150px;
+    }`
+            : `.slick-slide div {
+        outline: none;
+    }
+    .slick-dots {
+        bottom: 0px;
+        li {
+            width: 30px;
+            button {
+                &:before {
+                    color: black;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+    }`}
 `;
 
 const ImageContainer = styled.div`
-    margin: 0 16px;
+    ${props =>
+        !props.multi
+            ? `margin: 0;`
+            : `margin: 0 16px 50px 16px;
     h5 {
         margin: 5px 0;
     }
     span {
         font-size: 10px;
         color: #cdcdcd;
-    }
+    }`}
 `;
 
 const Image = styled.img`

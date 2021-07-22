@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Text, Input, Grid, Button } from "../elements";
 import { signupSV } from "../redux/modules/user";
@@ -22,16 +24,21 @@ const Signup = () => {
             pwd_check === "" ||
             nickname === "" ||
             email === ""
-        ) {
-            window.alert("정보를 모두 입력해주세요!");
-            return;
-        }
-        if (pwd !== pwd_check) {
-            window.alert("비밀번호와 비밀번호 확인이 일치하지 않습니다!");
-            return;
-        }
-        // console.log(id, pwd, email, pwd_check, nickname);
-        dispatch(signupSV(id, pwd, email, pwd_check, nickname));
+        )
+            return toast("정보를 모두 입력해주세요! 🍧");
+
+        if (id.length < 3) return toast("3글자 이상 입력해주세요! 🍧");
+
+        if (nickname.length < 3) return toast("3글자 이상 입력해주세요! 🍧");
+
+        if (pwd.length < 3) return toast("3글자 이상 입력해주세요! 🍧");
+
+        if (pwd !== pwd_check)
+            return toast("비밀번호와 비밀번호 확인이 일치하지 않습니다! 🍧");
+
+        if (emailCheck(email)) return toast("이메일형식을 맞춰주세요! 🍧");
+
+        return dispatch(signupSV(id, pwd, email, pwd_check, nickname));
     };
 
     return (
@@ -51,9 +58,6 @@ const Signup = () => {
                                 setId(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {id.length < 3 ? "3글자 이상 입력해주세요!" : ""}
-                        </Text>
                     </Grid>
                     <Grid margin="0 0 20px 0">
                         <Input
@@ -63,11 +67,6 @@ const Signup = () => {
                                 setNickname(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {nickname.length < 3
-                                ? "3글자 이상 입력해주세요!"
-                                : ""}
-                        </Text>
                     </Grid>
 
                     <Grid margin="0 0 20px 0">
@@ -78,9 +77,6 @@ const Signup = () => {
                                 setPwd(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {pwd.length < 3 ? "3글자 이상 입력해주세요!" : ""}
-                        </Text>
                     </Grid>
                     <Grid margin="0 0 20px 0">
                         <Input
@@ -90,11 +86,6 @@ const Signup = () => {
                                 setPwdCheck(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {pwd !== pwd_check
-                                ? "비밀번호와 일치시켜주세요!"
-                                : ""}
-                        </Text>
                     </Grid>
                     <Grid margin="0 0 20px 0">
                         <Input
@@ -104,12 +95,8 @@ const Signup = () => {
                                 setEmail(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {emailCheck(email)
-                                ? ""
-                                : "이메일형식을 맞춰주세요!"}
-                        </Text>
                     </Grid>
+                    <ToastContainer />
                     <Button
                         _onClick={() => {
                             signup();

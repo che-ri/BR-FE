@@ -3,18 +3,32 @@ import { Text, Input, Grid, Button } from "../elements";
 import styled from "styled-components";
 import { loginSV } from "../redux/modules/user";
 import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = props => {
-    const { history } = props;
     const dispatch = useDispatch();
-
     const [id, setId] = React.useState("");
     const [pwd, setPwd] = React.useState("");
+
+    const toast_error_setting = {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    };
+
     const login = () => {
-        if (id === "" || pwd === "") {
-            window.alert("아이디 혹은 비밀번호가 공란입니다! 입력해주세요!");
-            return;
-        }
+        if (id === "" || pwd === "")
+            return toast(
+                "아이디 혹은 비밀번호가 공란입니다! 🍧",
+                toast_error_setting
+            );
+        if (id.length < 3) return toast("아이디는 3글자 이상이예요! 🍧");
+        if (pwd.length < 3) return toast("패스워드는 3글자 이상이예요! 🍧");
         return dispatch(loginSV(id, pwd));
     };
 
@@ -37,9 +51,6 @@ const Login = props => {
                                 setId(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {id.length < 3 ? "아이디는 3글자 이상이예요!" : ""}
-                        </Text>
                     </Grid>
                     <Grid margin="0 0 20px 0">
                         <Input
@@ -49,12 +60,8 @@ const Login = props => {
                                 setPwd(e.target.value);
                             }}
                         />
-                        <Text color="#a0623d" size="11px">
-                            {pwd.length < 3
-                                ? "패스워드는 3글자 이상이예요!"
-                                : ""}
-                        </Text>
                     </Grid>
+                    <ToastContainer />
                     <Grid margin="0 0 20px 0">
                         <Button
                             _onClick={() => {
@@ -75,7 +82,7 @@ const Login = props => {
                     </A>
                     <A
                         onClick={() => {
-                            signup();
+                            props.history.push("/join");
                         }}
                     >
                         회원가입
