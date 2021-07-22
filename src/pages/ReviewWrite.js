@@ -1,50 +1,30 @@
-//ReviewWrite.js 20210720 7시
-import React, { useRef, useState,useEffect } from "react";
-import styled from "styled-components";
+import React, { useState,useEffect } from "react";
 import "../asset/css/modal.css";
-import {history} from "../redux/configureStore"
 
-import { Grid, Image, Text, Button, Input } from "../elements";
+import { Grid, Button, Input } from "../elements";
 import axios from "axios";
-
-import { getReviewDetail } from "../shared/api";
-
+import Cookies from "js-cookie";
 
 const url = "https://bestclone.herokuapp.com";
 const api = axios.create({
     baseURL: url,
     headers: {
-        authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuaWNrbmFtZSI6ImhhbGJlIiwiaWF0IjoxNjI2NTU4MDY0fQ.1VGoOT0fdkFdzw5MqQQMl0hvlA3nSXcK9kg_YPutyyA",
+        authorization: Cookies.get("token"),
     },
 });
 
 const ReviewWrite = props => {
     const { open, close, header, btnName , reviewId} = props;
 
-    //const inputTitle = useRef();
-    //const inputContent = useRef();
-    //const [list, setList] = useState({});
-    
-
-    //is_edit가 false라면 그냥 글쓰기!
-    //const is_edit = reviewId ? true : false;
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-
-
     const localStotageTitle = localStorage.getItem("title");
     const localStotageContent = localStorage.getItem("content");
 
-    useEffect( () => {
-            // list = await getReviewDetail(reviewId);
-            //setList(list);
-            setTitle(localStorage.getItem("title"))
-            setContent(localStorage.getItem("content"))
-            console.log(";;;")    
-            //return getList();
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
-    //title or content 이 바뀌면, useEffect 재실행된다.(아래 배열 때문에)     
+    useEffect( () => {
+            setTitle(localStorage.getItem("title"))
+            setContent(localStorage.getItem("content"))  
     }, [localStotageTitle,localStotageContent ] );
 
     
@@ -106,11 +86,10 @@ const ReviewWrite = props => {
                 <section>
                     <header>{header}</header>
                     <main>
-                        <Grid padding="10px 20px">
-                            <Input
+                        <Grid padding="10px 200px">
+                            <Input 
                                 name="title"
                                 type="text"
-                                //ref={inputTitle}
                                 value={title || ""}
                                 _onChange={
                                     changeTitle
@@ -118,12 +97,11 @@ const ReviewWrite = props => {
                                 placeholder="제목"
                             ></Input>
                         </Grid>
-                        <Grid padding="5px 20px">
+                        <Grid padding="20px 200px">
                             <Input
                                 name="content"
                                 type="text"
                                 value={content || ""}
-                                //ref={inputContent}
                                 _onChange={ 
                                     changeContent                        
                                 }
@@ -131,10 +109,10 @@ const ReviewWrite = props => {
                             ></Input>
                         </Grid>
 
-                        <Grid padding="5px 20px" is_flex>
+                        <Grid padding="20px 200px" margin="0 0 0 240px " >
                             <Button
                                 _onClick={()=>{
-                                    if(btnName){ //글쓰기가 아니고, 수정하기 상황일 때 btnName이 넘겨진다.
+                                    if(btnName){ //수정하기 버튼클릭시 btnName이 넘겨진다.
                                         editReview()
                                     }else{
                                         addReview()
@@ -145,11 +123,14 @@ const ReviewWrite = props => {
                                 bg="#d3c1ab"
                                 radius="3px"
                                 hoverBg="#ff7c98"
+                                margin= "3px"
                             >{btnName? btnName : "작성하기"}
                             </Button>
                             <Button
                                 className="close"
-                                _onClick={close}
+                                _onClick={                                    
+                                    close
+                                }
                                 width="115px"
                                 height="34px"
                                 bg="#6c757d"

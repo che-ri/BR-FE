@@ -20,14 +20,17 @@ export const getIcecreamList = page =>
 //아이스크림 디테일 페이지
 export const getIcecream = title =>
     api.get(`menu/icecream/${title}`).then(res => {
-        console.log("getIcecream=>",res);
         return res;
     });
+
+export const getEventList = () =>
+    api.get(`api/event`).then(res => {
+        return res;
+    });   
 
 //페이지별 리뷰 불러오기
 export const getReviewList = page =>
     api.get(`review/?page=${page}`).then((res) => {
-        console.log("*GetreviewList=>",res);
         return res;
     });
 // 리뷰 디테일 페이지

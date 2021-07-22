@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Grid, Button } from "../elements";
-
+import Inner from "../components/Inner";
 import styled from "styled-components";
-
 import { spoon_left, spoon_right } from "../asset/icon";
-import ModalWrite from "./ReviewWrite.js";
+import { arrow_next, arrow_prev } from "../asset/icon";
+
+import ModalWrite from "./ReviewWrite.js"
 import ModalDetail from "./ReviewDetail.js";
 
 import { getReviewList } from "../shared/api.js";
+import {useSelector} from "react-redux";
 
-import Inner from "../components/Inner";
-import { arrow_next, arrow_prev } from "../asset/icon";
 
 
 const Review = props => {
     const [modalWriteOpen, setModalWriteOpen] = useState(false);
     const [modalDetailOpen, setModalDetailOpen] = useState(false);
     const [reviewId , setReviewId] = useState(0);
-    //로그인 여부로 확인해서 글쓰기 버튼 활성화 여부
-    const is_login = true;
+    const [userConfirm , setUserConfirm] = useState(false);
+
+    const user_info = useSelector((state)=> state.user.user_info);
+    const is_login = useSelector((state)=> state.user.is_login);
+    
     const [list, setList] = useState([]);
     const [page, setPage] = useState(1);
-    
 
     useEffect(() => {
         async function getList() {
@@ -34,10 +36,8 @@ const Review = props => {
     }, [page]);
 
     let reviewList = list.reviews;
-    //const pageArr =  createArr(Number(list.totalPage));
     let pageArr = new Array(list.totalPage);
     pageArr.fill(0);
-    console.log(pageArr)
 
     const prevPage = (page) => {
         if(page <= 4){
@@ -70,15 +70,16 @@ const Review = props => {
     const openDetailModal = (id) => {
         setModalDetailOpen(true);
         setReviewId(id);
-
     };
     const closeDetailModal = () => {
         setModalDetailOpen(false);
+        setUserConfirm(false)
+        localStorage.setItem("title","");
+        localStorage.setItem("content","");
     };
     
     return (
-        <>
-        
+        <>       
             <Grid width="900px" margin="0px auto">
                 <Title>
                     <img
@@ -110,11 +111,18 @@ const Review = props => {
                     <Line />
 
                     { reviewList ? reviewList.map((p, idx) => {
+                        
                         return (
                             <>
                                 <Grid is flex margin="0 auto"
                                  _onClick={()=>{
-                                    openDetailModal(p.id);
+                                    console.log("user_info.id 비교",user_info.id === p.userId,user_info.id, p.userId);
+                                        if(user_info.id === p.userId){
+                                            setUserConfirm(true)
+                                            openDetailModal(p.id);                                       
+                                        }else{
+                                            openDetailModal(p.id);
+                                        }
                                  }} key={idx}
                                 >
 
@@ -190,22 +198,21 @@ const Review = props => {
                             </Inner>
                         </Container>
 
-
-
                     <ModalWrite
                         open={modalWriteOpen}
                         close={closeWriteModal}
                         header="리뷰 작성하기"
                     >
-                        {/* ReviewWrite.js <main></main>에 내용이 출력된다.*/}
+                        {/* ReviewWrite.js <main></main>의 내용 출력*/}
                     </ModalWrite>
                     <ModalDetail
                         open={modalDetailOpen}
                         close={closeDetailModal}
                         header="리뷰 상세보기"
                         reviewId = {reviewId}
+                        userConfirm = {userConfirm}
                     >
-                        {/* ReviewDetail.js <main></main>에 내용이 출력된다.*/}
+                        {/* ReviewDetail.js <main></main>의 내용 출력*/}
                     </ModalDetail>
                 </Grid>
             </Grid>
