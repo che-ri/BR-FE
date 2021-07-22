@@ -36,7 +36,7 @@ const Signup = () => {
         if (pwd !== pwd_check)
             return toast("비밀번호와 비밀번호 확인이 일치하지 않습니다! 🍧");
 
-        if (emailCheck(email)) return toast("이메일형식을 맞춰주세요! 🍧");
+        if (!emailCheck(email)) return toast("이메일형식을 맞춰주세요! 🍧");
 
         return dispatch(signupSV(id, pwd, email, pwd_check, nickname));
     };

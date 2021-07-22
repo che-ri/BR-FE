@@ -16,7 +16,7 @@
 .modal > section {
     width: 90%;
     max-width: 900px;
-    height: 400px;
+    height: max-content;
     margin: 0 auto;
     border-radius: 0.3rem;
     background-color: #fff;
@@ -25,11 +25,12 @@
 }
 .modal > section > header {
     position: relative;
-    padding: 24px 64px 24px 16px;
+    padding: 24px 0;
     background-color: #ff7c98;
     color: #ffffff;
     font-weight: 900;
     text-align: center;
+    font-size: 15px;
 }
 .modal > section > header button {
     position: absolute;

@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import imagesrc from "../asset/icon/icon_map_marker_.png";
 import { getStoreInfo } from "../shared/api";
-const { kakao } = window;
 
 const Store = () => {
+    const { kakao } = window;
     useEffect(() => {
         //카카오 지도생성
         async function getStore() {
             const { data } = await getStoreInfo();
+
             const container = document.getElementById("map");
+
             const options = {
                 center: new kakao.maps.LatLng(37.4970132, 127.028102), //초기 좌표
                 level: 6,

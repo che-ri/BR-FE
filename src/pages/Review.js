@@ -5,23 +5,21 @@ import styled from "styled-components";
 import { spoon_left, spoon_right } from "../asset/icon";
 import { arrow_next, arrow_prev } from "../asset/icon";
 
-import ModalWrite from "./ReviewWrite.js"
+import ModalWrite from "./ReviewWrite.js";
 import ModalDetail from "./ReviewDetail.js";
 
 import { getReviewList } from "../shared/api.js";
-import {useSelector} from "react-redux";
-
-
+import { useSelector } from "react-redux";
 
 const Review = props => {
     const [modalWriteOpen, setModalWriteOpen] = useState(false);
     const [modalDetailOpen, setModalDetailOpen] = useState(false);
-    const [reviewId , setReviewId] = useState(0);
-    const [userConfirm , setUserConfirm] = useState(false);
+    const [reviewId, setReviewId] = useState(0);
+    const [userConfirm, setUserConfirm] = useState(false);
 
-    const user_info = useSelector((state)=> state.user.user_info);
-    const is_login = useSelector((state)=> state.user.is_login);
-    
+    const user_info = useSelector(state => state.user.user_info);
+    const is_login = useSelector(state => state.user.is_login);
+
     const [list, setList] = useState([]);
     const [page, setPage] = useState(1);
 
@@ -39,27 +37,27 @@ const Review = props => {
     let pageArr = new Array(list.totalPage);
     pageArr.fill(0);
 
-    const prevPage = (page) => {
-        if(page <= 4){
-            window.alert("페이지 이동 불가")
+    const prevPage = page => {
+        if (page <= 4) {
+            window.alert("페이지 이동 불가");
             return;
         }
-        if(page-1<= 4 * page){
-            page = page - 4
+        if (page - 1 <= 4 * page) {
+            page = page - 4;
         }
-        setPage(page=> page-4);
-    }
+        setPage(page => page - 4);
+    };
 
-    const nextPage = (page) => {
-        if(page >= list.totalPage){
-            page= list.totalPage
+    const nextPage = page => {
+        if (page >= list.totalPage) {
+            page = list.totalPage;
             return;
         }
-        if(4 * (page+1) < page+1){
-            page = page + 4
+        if (4 * (page + 1) < page + 1) {
+            page = page + 4;
         }
-        setPage(page=> page+4);
-    }
+        setPage(page => page + 4);
+    };
 
     const openWriteModal = () => {
         setModalWriteOpen(true);
@@ -67,19 +65,18 @@ const Review = props => {
     const closeWriteModal = () => {
         setModalWriteOpen(false);
     };
-    const openDetailModal = (id) => {
+    const openDetailModal = id => {
         setModalDetailOpen(true);
         setReviewId(id);
     };
     const closeDetailModal = () => {
         setModalDetailOpen(false);
-        setUserConfirm(false)
-        localStorage.setItem("title","");
-        localStorage.setItem("content","");
+        setUserConfirm(false);
+        localStorage.setItem("title", "");
+        localStorage.setItem("content", "");
     };
-    
     return (
-        <>       
+        <>
             <Grid width="900px" margin="0px auto">
                 <Title>
                     <img
@@ -89,11 +86,11 @@ const Review = props => {
                 </Title>
                 <Grid width="100%">
                     <BntBox>
-                        <Button 
+                        <Button
                             _onClick={() => {
-                                if(!is_login){
-                                    window.alert("로그인후 이용해주세요 😊")
-                                    return 
+                                if (!is_login) {
+                                    window.alert("로그인후 이용해주세요 😊");
+                                    return;
                                 }
                                 openWriteModal();
                             }}
@@ -110,93 +107,109 @@ const Review = props => {
                 <Grid>
                     <Line />
 
-                    { reviewList ? reviewList.map((p, idx) => {
-                        
-                        return (
-                            <>
-                                <Grid is flex margin="0 auto"
-                                 _onClick={()=>{
-                                    console.log("user_info.id 비교",user_info.id === p.userId,user_info.id, p.userId);
-                                        if(user_info.id === p.userId){
-                                            setUserConfirm(true)
-                                            openDetailModal(p.id);                                       
-                                        }else{
-                                            openDetailModal(p.id);
+                    {reviewList
+                        ? reviewList.map((p, idx) => {
+                              return (
+                                  <>
+                                      <Grid
+                                          is
+                                          flex
+                                          margin="0 auto"
+                                          _onClick={() => {
+                                              if (
+                                                  user_info &&
+                                                  user_info.id === p.userId
+                                              ) {
+                                                  setUserConfirm(true);
+                                                  openDetailModal(p.id);
+                                              } else {
+                                                  openDetailModal(p.id);
+                                              }
+                                          }}
+                                          key={p.id}
+                                      >
+                                          <TR>
+                                              <TD
+                                                  width="72px"
+                                                  height="75px"
+                                                  margin="10px 20px"
+                                              >
+                                                  {list.total -
+                                                      7 * (page - 1) -
+                                                      idx}
+                                              </TD>
+                                              <TD
+                                                  width="80%"
+                                                  height="75px"
+                                                  align="left"
+                                              >
+                                                  {p.title}
+                                              </TD>
+                                              <TD
+                                                  width="200px"
+                                                  height="75px"
+                                                  margin="5px"
+                                              >
+                                                  {p.createdAt.split("T")[0]}
+                                              </TD>
+                                          </TR>
+                                      </Grid>
+                                  </>
+                              );
+                          })
+                        : "게시물이 0건입니다."}
+
+                    <Container>
+                        <Inner big>
+                            <ButtonContainer>
+                                <button
+                                    onClick={() => {
+                                        if (page <= 4) {
+                                            if (page === 1) {
+                                                window.alert(
+                                                    "첫번째 페이지 입니다."
+                                                );
+                                                return;
+                                            }
+                                            setPage(1);
+                                            return;
                                         }
-                                 }} key={idx}
+                                        prevPage();
+                                    }}
                                 >
-
-                                    <TR>
-                                        <TD
-                                            width="72px"
-                                            height="75px"
-                                            margin="10px 20px"
-                                        >
-                                            {(list.total - 7*(page-1))-idx}
-                                        </TD>
-                                        <TD width="85%" height="75px" align="left">
-                                            {p.title}
-                                        </TD>
-                                        <TD
-                                            width="200px"
-                                            height="75px"
-                                            margin="5px"
-                                        >
-                                            {p.createdAt.split('T')[0]}
-                                        </TD>
-                                    </TR>
-                                </Grid>
-                            </>
-                        );
-                    }): console.log("게시물이 0건입니다.")}
-
-                        <Container>
-                            <Inner big>
-                                <ButtonContainer>
-                                <button onClick={ () =>{
-                                    if(page <= 4){
-                                        if(page === 1){
-                                            window.alert("첫번째 페이지 입니다.")
-                                            return 
-                                        }
-                                        setPage(1)
-                                        return
-                                    } 
-                                    prevPage()
-                                  }
-                                }>
-                                        
-                                <img src={arrow_prev} alt="prev"/>
+                                    <img src={arrow_prev} alt="prev" />
                                 </button>
-                                {pageArr.map((p, idx) => {                                    
+                                {pageArr.map((p, idx) => {
                                     return (
                                         <>
-                                        <button onClick={ () =>
-                                            setPage(idx+1)
-                                        }>
-                                            {idx+1}
-                                        </button>
+                                            <button
+                                                onClick={() => setPage(idx + 1)}
+                                            >
+                                                {idx + 1}
+                                            </button>
                                         </>
-                                    )
-                                })
-                                }
-                                <button onClick={ () =>{
-                                    if(page+4 >= list.totalPage ) {
-                                        if(page === 7){
-                                            window.alert("마지막 페이지입니다.")
-                                            return 
+                                    );
+                                })}
+                                <button
+                                    onClick={() => {
+                                        if (page + 4 >= list.totalPage) {
+                                            if (page === 7) {
+                                                window.alert(
+                                                    "마지막 페이지입니다."
+                                                );
+                                                return;
+                                            }
+                                            setPage(list.totalPage);
+                                            return;
                                         }
-                                        setPage(list.totalPage)
-                                        return
-                                    }
-                                    nextPage()
-                                  }
-                                }>
+                                        nextPage();
+                                    }}
+                                >
                                     <img src={arrow_next} alt="next" />
                                 </button>
-                                </ButtonContainer>
-                            </Inner>
-                        </Container>
+                            </ButtonContainer>
+                        </Inner>
+                    </Container>
 
                     <ModalWrite
                         open={modalWriteOpen}
@@ -209,8 +222,8 @@ const Review = props => {
                         open={modalDetailOpen}
                         close={closeDetailModal}
                         header="리뷰 상세보기"
-                        reviewId = {reviewId}
-                        userConfirm = {userConfirm}
+                        reviewId={reviewId}
+                        userConfirm={userConfirm}
                     >
                         {/* ReviewDetail.js <main></main>의 내용 출력*/}
                     </ModalDetail>
@@ -281,11 +294,10 @@ const TD = styled.td`
     border-bottom: 1px solid #dadada;
     color: #2f231c;
     font-size: 13px;
-    padding: 20px 0 0 0;
+    padding: 20px;
     color: #948780
-    ${(props) => (props.align ? `text-align: ${props.align};` : "center")}
+        ${props => (props.align ? `text-align: ${props.align};` : "center")};
 `;
-
 
 const BntBox = styled.div`
     width: 100%;
@@ -296,7 +308,6 @@ const BntBox = styled.div`
         background: #ff7c98;
     }
 `;
-
 
 const Container = styled.div`
     width: 100%;

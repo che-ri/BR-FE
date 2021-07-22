@@ -1,50 +1,49 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { spoon_left, spoon_right } from "../asset/icon";
 
-import  { Grid } from "../elements"
+import { Grid } from "../elements";
 import { getEventList } from "../shared/api.js";
 import EventPost from "../components/EventPost.js";
 
 const Event = () => {
     const [list, setList] = useState([]);
 
-    useEffect(()=>{
-        async function getList(){
-            const {data} = await getEventList()
-            console.log(data)
+    useEffect(() => {
+        async function getList() {
+            const { data } = await getEventList();
             setList(data);
         }
-        return getList();       
-    },[]);
+        return getList();
+    }, []);
 
-    console.log("list", list)
-    
-    return (        
+    return (
         <>
-                <Title>
-                    <img
-                        src={require("../asset/title/h_title.png").default}
-                        alt="event"
-                    />
-                </Title>
+            <Title>
+                <img
+                    src={require("../asset/title/h_title.png").default}
+                    alt="event"
+                />
+            </Title>
 
-                <Grid width="1200px" margin="0 auto">                 
-                    <EventList>                        
-                        {list.length>0 ? list.map((item, idx) => (
-                            <EventPost key={idx} {...item}/>
-                        )) : ""}
-                    </EventList>
-                </Grid>
+            <Grid width="1200px" margin="0 auto">
+                <EventList>
+                    {list.length > 0
+                        ? list.map((item, idx) => (
+                              <EventPost key={idx} {...item} />
+                          ))
+                        : ""}
+                </EventList>
+            </Grid>
         </>
-    )
+    );
 };
 
 const Title = styled.div`
     width: max-content;
     margin: auto;
     margin-top: 105px;
-    margin-bottom: 35px;
+    margin-bottom: 100px;
     position: relative;
     ::before {
         content: "";
@@ -68,11 +67,12 @@ const Title = styled.div`
     }
 `;
 
-
-
 const EventList = styled.div`
+    border-top: 2px solid #ff7c98;
+    padding-top: 50px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
     height: auto;
 `;
 
