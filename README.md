@@ -2,7 +2,7 @@
 
 ### 주제 : 배스킨라빈스
 
-http://www.baskinrobbins.co.kr/
+🍧 URL : http://beskinrobbins.shop/
 
 <br/>
 
@@ -43,12 +43,6 @@ http://www.baskinrobbins.co.kr/
 <br/>
 
 ---
-
-## 🍧 URL
-
-http://beskinrobbins.shop/
-
-<br/>
 
 ## 주소가 동작하지 않나요?
 
