@@ -3,7 +3,7 @@
 - 주제 : 배스킨라빈스
 
 - 🍧 URL : http://beskinrobbins.shop/
-- 🎬 시연영상 : https://www.youtube.com/channel/UCzSxbFcrRrQTnrXzlU2B70w
+- 🎬 시연영상 : https://www.youtube.com/watch?v=GDzbU34AHi4
 
 <br/>
 
