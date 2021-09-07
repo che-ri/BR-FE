@@ -17,14 +17,14 @@
 
 ## 🦄Member
 
-### Front
+### Front ([저장소](https://github.com/che-ri/br_fe))
 
--   권지영
--   장정윤
+-   권지영 ([Githup](https://github.com/che-ri))
+-   장정윤 ([Githup](https://github.com/Jeongyun-Jang))
 
-### Back
+### Back ([저장소](https://github.com/pakjonghun/bestClone))
 
--   박정훈
+-   박정훈 ([Githup](https://github.com/pakjonghun))
 
 <br/>
 
