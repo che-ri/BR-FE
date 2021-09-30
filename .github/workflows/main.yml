@@ -1,0 +1,49 @@
+name: CI
+
+# Workflow를 실행시키기 위한 Event 목록입니다.
+on:
+  # master 브랜치에서 Push 또는 Pull Request 이벤트가 발생한 경우에 Workflow가 실행됩니다.
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+# 워크플로 실행은 순차적으로 또는 병렬로 실행할 수 있는 하나 이상의 작업으로 구성됩니다.
+jobs:
+  build:
+    # Runner가 실행되는 환경을 정의하는 부분입니다.
+    runs-on: ubuntu-latest
+
+    # Steps은 실행될 일련의 작업을 나타냅니다. 
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      # node modules 캐싱
+      - name: Cache node modules  
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-master-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+      
+      - name: Install Dependencies
+        run: yarn
+        
+      - name: Build
+        run: yarn build
+
+      - name: Deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            dist s3://beskinrobbins.shop
