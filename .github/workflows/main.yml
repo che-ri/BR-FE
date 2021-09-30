@@ -1,29 +1,21 @@
-name: CI
+# master-deploy-work.yml
+name: master
 
-# Workflow를 실행시키기 위한 Event 목록입니다.
 on:
-  # master 브랜치에서 Push 또는 Pull Request 이벤트가 발생한 경우에 Workflow가 실행됩니다.
   push:
-    branches: [ master ]
+    branches:
+      - master    # master 브랜치에서 push 이벤트가 일어났을 때 실행
   pull_request:
-    branches: [ master ]
-
-  workflow_dispatch:
-
-# 워크플로 실행은 순차적으로 또는 병렬로 실행할 수 있는 하나 이상의 작업으로 구성됩니다.
+    branches:  
+      - master 
 jobs:
   build:
-    # Runner가 실행되는 환경을 정의하는 부분입니다.
-    runs-on: ubuntu-latest
-
-    # Steps은 실행될 일련의 작업을 나타냅니다. 
+    runs-on: ubuntu-18.04
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
-      # node modules 캐싱
-      - name: Cache node modules  
+      - name: Cache node modules  # node modules 캐싱
         uses: actions/cache@v1
         with:
           path: node_modules
@@ -31,10 +23,10 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
-      
+
       - name: Install Dependencies
         run: yarn
-        
+
       - name: Build
         run: yarn build
 
