@@ -19,7 +19,7 @@ import { history } from "../redux/configureStore";
 
 const Header = () => {
     const dispatch = useDispatch();
-    const is_login = useSelector(state => state.user.is_login); //로그인상태에 따른 헤더버튼 변화
+    const is_login = useSelector((state) => state.user.is_login); //로그인상태에 따른 헤더버튼 변화
     const hashInput = useRef();
 
     //검색버튼 토글
@@ -41,10 +41,10 @@ const Header = () => {
     ];
 
     //알러지 check하면 list에 추가하기
-    const onClickHandler = target => {
+    const onClickHandler = (target) => {
         //알러지 선택취소의 경우
         if (allergy_list.includes(target)) {
-            setAllergyList(allergy_list.filter(ele => ele !== target));
+            setAllergyList(allergy_list.filter((ele) => ele !== target));
             return;
         }
         //불변성 유지
@@ -52,14 +52,13 @@ const Header = () => {
     };
 
     //해쉬클릭하면 hash 바꾸기
-    const clickHash = value => {
+    const clickHash = (value) => {
         hashInput.current.value = value;
         setHash(value);
     };
 
     //검색
     const searchTerm = () => {
-        console.log("검색중🐜");
         const hashTerm = hash.slice(1); //해쉬 검색 보내기 전에 #빼고 보내기!
         dispatch(searchSV(term, hashTerm, allergy_list));
     };
@@ -178,7 +177,7 @@ const Header = () => {
                         <span>제품명</span>
                         <input
                             type="text"
-                            onChange={e => setTerm(e.target.value)}
+                            onChange={(e) => setTerm(e.target.value)}
                         />
                         <span>해시태그</span>
                         <div>
@@ -186,20 +185,20 @@ const Header = () => {
                                 type="text"
                                 ref={hashInput}
                                 placeholder="하나만 입력해주세요!"
-                                onChange={e => setHash(e.target.value)}
+                                onChange={(e) => setHash(e.target.value)}
                             />
                         </div>
                         <PopularHash style={{ gridColumn: "4/5" }}>
                             <span style={{ color: "#9c9c9c" }}>
                                 • 자주 찾는 해시태그
                             </span>
-                            <a onClick={e => clickHash(e.target.innerText)}>
+                            <a onClick={(e) => clickHash(e.target.innerText)}>
                                 #꿀.바.망
                             </a>
-                            <a onClick={e => clickHash(e.target.innerText)}>
+                            <a onClick={(e) => clickHash(e.target.innerText)}>
                                 #머스크메론
                             </a>
-                            <a onClick={e => clickHash(e.target.innerText)}>
+                            <a onClick={(e) => clickHash(e.target.innerText)}>
                                 #월넛
                             </a>
                         </PopularHash>

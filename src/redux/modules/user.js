@@ -65,17 +65,15 @@ export const signupSV =
 export const loginSV =
     (id, password) =>
     async (dispatch, getState, { history }) => {
-        api.post("api/login", { id, password }).then(res => {
-            //로그인 실패!
+        api.post("api/login", { id, password }).then((res) => {
             const {
                 data: { token },
             } = res;
+            //로그인 실패 시 error 팝업을 뜨게 한다.
             if (res.data.ok === false) return toast(`${res.data.error} 🍧`);
-            Cookies.set("token", token, { expires: 7 });
+            Cookies.set("token", token, { expires: 7 }); //쿠키에 토큰 저장
             toast("로그인 완료! 🍧");
             window.location = "/";
-            // dispatch(login());
-            // history.push("/");
         });
     };
 
@@ -84,7 +82,7 @@ export const loginCheckSV =
     async (dispatch, getState, { history }) => {
         const token = Cookies.get("token");
         if (token === undefined) return;
-        api.get("api/mypage", { token }).then(res => {
+        api.get("api/mypage", { token }).then((res) => {
             const {
                 data: { data: user_info },
             } = res;

@@ -30,20 +30,19 @@ const search = createSlice({
 export const searchSV =
     (keyword, hashtag, select) =>
     async (dispatch, getState, { history }) => {
-        console.log(keyword, hashtag, select);
         api.post("/menu/search", {
             keyword,
             hashtag,
             select,
         })
-            .then(res => {
+            .then((res) => {
                 const {
                     data: { data: result },
                 } = res;
                 dispatch(searchTerm({ result }));
                 history.push("/search");
             })
-            .catch(error => console.log(error));
+            .catch((error) => console.log(error));
     };
 
 export const { searchTerm } = search.actions;
