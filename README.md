@@ -33,7 +33,7 @@
 ## 💻Use
 
 -   React.js
--   데이터관리 : reduck, reduck-action(redux-actions), reduck- toolkit
+-   데이터관리 : redux, redux-action(redux-actions), redux- toolkit
 -   미들웨어 : redux-thunk
 -   배포 : AWS S3
 -   통신 : axios
