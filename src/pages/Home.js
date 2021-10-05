@@ -14,7 +14,6 @@ import main_banner5 from "../asset/mainBnr/1638847240.png";
 const Home = () => {
     return (
         <>
-            <span>ci/cd 테스트 중입니다.</span>
             <Img src={require("../asset/mainBnr/top_bnr.jpg").default} />
             <Container>
                 <Inner style={{ position: "relative" }}>
